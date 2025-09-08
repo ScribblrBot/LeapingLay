@@ -224,7 +224,7 @@ export default function ProfilePage() {
                 color: 'from-indigo-500 to-blue-500 hover:from-indigo-600 hover:to-blue-600', 
                 icon: 'fab fa-discord', 
                 label: 'Discord',
-                url: `https://discord.com/users/${profile.socials.discord}`
+                url: `https://discord.gg/${profile.socials.discord}`
               }
             ].map((social, index) => (
               <a 
