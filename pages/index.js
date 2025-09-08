@@ -1,6 +1,7 @@
 // pages/index.js
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Script from 'next/script';
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
@@ -49,6 +50,7 @@ export default function ProfilePage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center">
+        <Script src="/script/cat.js" strategy="afterInteractive" />
         <div className="flex flex-col items-center">
           <div className="relative">
             <div className="w-20 h-20 border-4 border-purple-500/30 rounded-full"></div>
@@ -66,6 +68,7 @@ export default function ProfilePage() {
   if (error) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex flex-col items-center justify-center p-4">
+        <Script src="/script/cat.js" strategy="afterInteractive" />
         <div className="bg-slate-800/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full text-center border border-purple-500/30 relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-pink-500/10 rounded-full blur-2xl"></div>
@@ -91,6 +94,9 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
+      {/* Script tag */}
+      <Script src="/script/cat.js" strategy="afterInteractive" />
+      
       {/* Animated background elements */}
       <div className="absolute top-0 left-0 w-full h-full opacity-10">
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse"></div>
