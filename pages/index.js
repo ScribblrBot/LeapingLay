@@ -312,7 +312,7 @@ export default function ProfilePage() {
           { 
             id: 'twitter',
             platform: 'twitter', 
-            icon: 'fab fa-x-twitter', 
+            icon: 'fab fa-twitter', 
             color: 'from-blue-400 to-blue-500',
             url: `https://twitter.com/${profile.socials.twitter}`
           },
