@@ -110,7 +110,7 @@ export default function ProfilePage() {
 
       <main className="max-w-4xl mx-auto px-4 py-8">
         {/* YouTube Section */}
-        {youtubeData && youtubeData.video && (
+        {youtubeData && youtubeData.id && (
           <section className="bg-slate-800/60 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-8 border border-purple-500/20">
             <h2 className="text-2xl font-semibold mb-6 flex items-center">
               <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent mr-3">
@@ -123,8 +123,8 @@ export default function ProfilePage() {
               <div className="lg:w-2/5 relative group cursor-pointer">
                 <div className="aspect-video h-full overflow-hidden">
                   <img 
-                    src={youtubeData.video.thumbnail} 
-                    alt={youtubeData.video.title}
+                    src={youtubeData.thumbnail} 
+                    alt={youtubeData.title}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
@@ -137,31 +137,31 @@ export default function ProfilePage() {
               
               <div className="p-6 lg:w-3/5">
                 <h3 className="text-xl font-medium text-white mb-3 hover:text-purple-300 transition-colors duration-200 line-clamp-2">
-                  {youtubeData.video.title}
+                  {youtubeData.title}
                 </h3>
                 
                 <div className="flex flex-wrap gap-3 text-sm text-gray-300 mb-4">
                   <span className="flex items-center bg-slate-700/60 px-3 py-1.5 rounded-full">
                     <i className="fas fa-eye mr-2 text-blue-400"></i> 
-                    {Number(youtubeData.video.viewCount).toLocaleString()} views
+                    {Number(youtubeData.viewCount).toLocaleString()} views
                   </span>
                   <span className="flex items-center bg-slate-700/60 px-3 py-1.5 rounded-full">
                     <i className="fas fa-thumbs-up mr-2 text-green-400"></i> 
-                    {Number(youtubeData.video.likeCount).toLocaleString()} likes
+                    {Number(youtubeData.likeCount).toLocaleString()} likes
                   </span>
                   <span className="flex items-center bg-slate-700/60 px-3 py-1.5 rounded-full">
                     <i className="fas fa-comment mr-2 text-yellow-400"></i> 
-                    {Number(youtubeData.video.commentCount).toLocaleString()} comments
+                    {Number(youtubeData.commentCount).toLocaleString()} comments
                   </span>
                 </div>
                 
                 <p className="text-sm text-gray-400 mb-5">
                   <i className="far fa-calendar-alt mr-2 text-purple-400"></i>
-                  Published: {new Date(youtubeData.video.publishedAt).toLocaleDateString()}
+                  Published: {new Date(youtubeData.publishedAt).toLocaleDateString()}
                 </p>
                 
                 <a 
-                  href={`https://youtube.com/watch?v=${youtubeData.video.id}`}
+                  href={`https://youtube.com/watch?v=${youtubeData.id}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center px-5 py-3 bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-xl hover:from-red-700 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-red-500/20 font-medium group"
