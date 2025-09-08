@@ -255,6 +255,14 @@ export default function ProfilePage() {
             color: 'from-indigo-500 to-indigo-600',
             hoverColor: 'hover:from-indigo-400 hover:to-indigo-500',
             url: `https://discord.gg/${profile.socials.discord}`
+          },
+          { 
+            id: 'github',
+            platform: 'github', 
+            icon: 'fab fa-github', 
+            color: 'bg-gray-800',
+            hoverColor: 'hover:bg-gray-700',
+            url: `https://github.com/${profile.socials.github}`
           }
         ].map((social) => (
           <div
