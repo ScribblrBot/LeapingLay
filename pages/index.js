@@ -1,4 +1,3 @@
-// pages/index.js
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -47,6 +46,75 @@ export default function ProfilePage() {
 
     fetchData();
   }, []);
+
+  // Function to handle server clicks
+  const handleServerClick = (serverId) => {
+    setActiveServer(serverId);
+  };
+
+  // Function to render content based on active server
+  const renderServerContent = () => {
+    switch(activeServer) {
+      case 'profile':
+        return (
+          <div className="max-w-6xl mx-auto px-8 py-12">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              {/* Profile Info */}
+              <div className="text-center md:text-left flex-1">
+                <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 animate-gradient bg-300% animate-shimmer">
+                  {profile.username}
+                </h1>
+                <p className="text-gray-300 text-xl mt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
+                  <span className="bg-slate-800/50 px-3 py-1 rounded-full border border-purple-500/20">
+                    @{profile.handle}
+                  </span>
+                  <span className="bg-purple-600/20 px-3 py-1 rounded-full text-purple-300">
+                    {profile.pronouns}
+                  </span>
+                </p>
+                <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-2xl bg-slate-800/30 backdrop-blur-sm p-6 rounded-2xl border border-purple-500/10">
+                  {profile.bio}
+                </p>
+              </div>
+            </div>
+          </div>
+        );
+      case 'youtube':
+        return (
+          <div className="max-w-6xl mx-auto px-8 py-12">
+            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
+              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
+                <i className="fab fa-youtube text-3xl mr-3 text-red-500 drop-shadow-lg"></i>
+                YouTube Channel
+              </span>
+            </h2>
+            <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30">
+              <p className="text-gray-300 mb-6">Content for YouTube server would go here.</p>
+              <a 
+                href={`https://youtube.com/channel/${profile.socials.youtube}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+              >
+                Visit YouTube Channel
+              </a>
+            </div>
+          </div>
+        );
+      // Add cases for other servers
+      default:
+        return (
+          <div className="max-w-6xl mx-auto px-8 py-12">
+            <h2 className="text-3xl font-bold mb-8">
+              {activeServer.charAt(0).toUpperCase() + activeServer.slice(1)} Server
+            </h2>
+            <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30">
+              <p className="text-gray-300">Content for the {activeServer} server would go here.</p>
+            </div>
+          </div>
+        );
+    }
+  };
 
   if (loading) {
     return (
@@ -107,7 +175,7 @@ export default function ProfilePage() {
               ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600' 
               : 'rounded-2xl bg-gray-700 hover:rounded-3xl hover:bg-purple-600'
           }`}
-          onClick={() => setActiveServer('profile')}
+          onClick={() => handleServerClick('profile')}
         >
           <img
             src={profile.profile.pfp}
@@ -130,56 +198,46 @@ export default function ProfilePage() {
             platform: 'youtube', 
             icon: 'fab fa-youtube', 
             color: 'bg-red-500',
-            url: `https://youtube.com/channel/${profile.socials.youtube}`
           },
           { 
             id: 'twitch',
             platform: 'twitch', 
             icon: 'fab fa-twitch', 
             color: 'bg-purple-500',
-            url: `https://twitch.tv/${profile.socials.twitch}`
           },
           { 
             id: 'instagram',
             platform: 'instagram', 
             icon: 'fab fa-instagram', 
             color: 'bg-pink-500',
-            url: `https://instagram.com/${profile.socials.instagram}`
           },
           { 
             id: 'twitter',
             platform: 'twitter', 
             icon: 'fab fa-x-twitter', 
             color: 'bg-blue-400',
-            url: `https://twitter.com/${profile.socials.twitter}`
           },
           { 
             id: 'throne',
             platform: 'throne', 
             icon: 'fas fa-crown', 
             color: 'bg-yellow-500',
-            url: `https://throne.com/${profile.socials.throne}`
           },
           { 
             id: 'discord',
             platform: 'discord', 
             icon: 'fab fa-discord', 
             color: 'bg-indigo-500',
-            url: `https://discord.gg/${profile.socials.discord}`
           }
         ].map((social) => (
-          <a
+          <div
             key={social.id}
-            href={social.url}
-            target="_blank"
-            rel="noopener noreferrer"
             className={`relative w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-300 group ${
               activeServer === social.id 
                 ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600' 
                 : `rounded-2xl ${social.color} hover:rounded-3xl hover:scale-110`
             }`}
-            onMouseEnter={() => setActiveServer(social.id)}
-            onMouseLeave={() => setActiveServer('profile')}
+            onClick={() => handleServerClick(social.id)}
           >
             <i className={`${social.icon} text-xl text-white`}></i>
             <div className={`absolute -left-1 top-1/2 w-1 h-4 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
@@ -188,7 +246,7 @@ export default function ProfilePage() {
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               {social.platform}
             </div>
-          </a>
+          </div>
         ))}
 
         {/* Online Status Indicator */}
@@ -215,32 +273,12 @@ export default function ProfilePage() {
 
         {/* Header Section */}
         <header className="relative z-10">
-          <div className="max-w-6xl mx-auto px-8 py-12">
-            <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Profile Info */}
-              <div className="text-center md:text-left flex-1">
-                <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 animate-gradient bg-300% animate-shimmer">
-                  {profile.username}
-                </h1>
-                <p className="text-gray-300 text-xl mt-2 flex flex-wrap items-center justify-center md:justify-start gap-3">
-                  <span className="bg-slate-800/50 px-3 py-1 rounded-full border border-purple-500/20">
-                    @{profile.handle}
-                  </span>
-                  <span className="bg-purple-600/20 px-3 py-1 rounded-full text-purple-300">
-                    {profile.pronouns}
-                  </span>
-                </p>
-                <p className="mt-6 text-gray-300 text-lg leading-relaxed max-w-2xl bg-slate-800/30 backdrop-blur-sm p-6 rounded-2xl border border-purple-500/10">
-                  {profile.bio}
-                </p>
-              </div>
-            </div>
-          </div>
+          {renderServerContent()}
         </header>
 
-        <main className="flex-1 overflow-y-auto px-8 pb-12 relative z-10">
-          {/* YouTube Section */}
-          {youtubeData && youtubeData.id && (
+        {/* YouTube Section (keep this if you want it always visible) */}
+        {youtubeData && youtubeData.id && activeServer === 'profile' && (
+          <main className="flex-1 overflow-y-auto px-8 pb-12 relative z-10">
             <section className="mb-12">
               <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30 relative overflow-hidden">
                 <div className="absolute -top-10 -right-10 w-32 h-32 bg-red-500/10 rounded-full blur-2xl"></div>
@@ -323,8 +361,8 @@ export default function ProfilePage() {
                 </div>
               </div>
             </section>
-          )}
-        </main>
+          </main>
+        )}
 
         <footer className="max-w-6xl mx-auto px-8 py-8 text-center text-gray-400 text-sm relative z-10">
           <p className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-xl border border-purple-500/10">
