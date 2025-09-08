@@ -2,17 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles */
-@layer components {
-  .gradient-bg {
-    @apply bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900;
-  }
-  
-  .card {
-    @apply bg-gray-800 bg-opacity-50 backdrop-blur-md rounded-xl p-6 shadow-xl;
-  }
-  
-  .social-icon {
-    @apply w-12 h-12 rounded-full flex items-center justify-center text-white text-xl transition-all duration-300 hover:scale-110;
-  }
+/* Simple, clean loading animation */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
