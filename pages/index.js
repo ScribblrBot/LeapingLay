@@ -7,31 +7,24 @@ export default function ProfilePage() {
   const [error, setError] = useState(null);
   const [activeServer, setActiveServer] = useState('profile');
 
-  // Mock profile data for demonstration
   useEffect(() => {
-    const mockProfile = {
-      username: "AuroraNova",
-      handle: "aurora_nova",
-      pronouns: "she/her",
-      bio: "Digital creator & streamer. Love sharing gaming moments and connecting with awesome people! Check out my content across platforms 🌟",
-      profile: {
-        pfp: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2864&q=80"
-      },
-      socials: {
-        youtube: "UC_x5XgPlCI4jN4V",
-        twitch: "aurora_nova",
-        instagram: "aurora_nova",
-        twitter: "aurora_nova",
-        throne: "aurora_nova",
-        discord: "aurora_nova"
+    const fetchData = async () => {
+      try {
+        // Fetch profile data from /json/profile.json
+        const profileResponse = await fetch('/json/profile.json');
+        if (!profileResponse.ok) {
+          throw new Error('Failed to fetch profile data');
+        }
+        const profileData = await profileResponse.json();
+        setProfile(profileData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
     };
-    
-    // Simulate API fetch
-    setTimeout(() => {
-      setProfile(mockProfile);
-      setLoading(false);
-    }, 1500);
+
+    fetchData();
   }, []);
 
   // Function to handle server clicks
@@ -96,6 +89,126 @@ export default function ProfilePage() {
                   className="inline-flex items-center gap-3 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1"
                 >
                   <i className="fab fa-youtube mr-2"></i> Visit YouTube Channel
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      case 'twitch':
+        return (
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <h2 className="text-3xl font-bold mb-8 flex items-center justify-center gap-3">
+              <span className="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <i className="fab fa-twitch text-3xl mr-3 text-purple-500"></i>
+                Twitch Channel
+              </span>
+            </h2>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/10">
+              <p className="text-gray-300 mb-6 text-center">Come watch my live streams on Twitch!</p>
+              <div className="flex justify-center">
+                <a 
+                  href={`https://twitch.tv/${profile.socials.twitch}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <i className="fab fa-twitch mr-2"></i> Visit Twitch Channel
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      case 'instagram':
+        return (
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <h2 className="text-3xl font-bold mb-8 flex items-center justify-center gap-3">
+              <span className="bg-gradient-to-r from-pink-400 to-orange-400 bg-clip-text text-transparent">
+                <i className="fab fa-instagram text-3xl mr-3 text-pink-500"></i>
+                Instagram Profile
+              </span>
+            </h2>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/10">
+              <p className="text-gray-300 mb-6 text-center">Follow me on Instagram for more content!</p>
+              <div className="flex justify-center">
+                <a 
+                  href={`https://instagram.com/${profile.socials.instagram}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-pink-600 to-orange-600 text-white rounded-lg hover:from-pink-700 hover:to-orange-700 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <i className="fab fa-instagram mr-2"></i> Visit Instagram Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      case 'twitter':
+        return (
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <h2 className="text-3xl font-bold mb-8 flex items-center justify-center gap-3">
+              <span className="bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
+                <i className="fab fa-x-twitter text-3xl mr-3 text-blue-400"></i>
+                Twitter Profile
+              </span>
+            </h2>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/10">
+              <p className="text-gray-300 mb-6 text-center">Follow me on Twitter for updates and thoughts!</p>
+              <div className="flex justify-center">
+                <a 
+                  href={`https://twitter.com/${profile.socials.twitter}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-800 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <i className="fab fa-x-twitter mr-2"></i> Visit Twitter Profile
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      case 'throne':
+        return (
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <h2 className="text-3xl font-bold mb-8 flex items-center justify-center gap-3">
+              <span className="bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
+                <i className="fas fa-crown text-3xl mr-3 text-yellow-500"></i>
+                Throne Wishlist
+              </span>
+            </h2>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/10">
+              <p className="text-gray-300 mb-6 text-center">Check out my wishlist on Throne!</p>
+              <div className="flex justify-center">
+                <a 
+                  href={`https://throne.com/${profile.socials.throne}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-yellow-600 text-white rounded-lg hover:bg-yellow-700 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <i className="fas fa-crown mr-2"></i> Visit Throne Wishlist
+                </a>
+              </div>
+            </div>
+          </div>
+        );
+      case 'discord':
+        return (
+          <div className="max-w-4xl mx-auto px-6 py-8">
+            <h2 className="text-3xl font-bold mb-8 flex items-center justify-center gap-3">
+              <span className="bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent">
+                <i className="fab fa-discord text-3xl mr-3 text-indigo-500"></i>
+                Discord Server
+              </span>
+            </h2>
+            <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-white/10">
+              <p className="text-gray-300 mb-6 text-center">Join my Discord community!</p>
+              <div className="flex justify-center">
+                <a 
+                  href={`https://discord.gg/${profile.socials.discord}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <i className="fab fa-discord mr-2"></i> Join Discord Server
                 </a>
               </div>
             </div>
