@@ -164,7 +164,6 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden flex">
-      <Script src="/script/cat.js" strategy="afterInteractive" />
       
       <div className="w-20 bg-gray-900 flex flex-col items-center py-4 space-y-4 border-r border-gray-800">
         <div 
