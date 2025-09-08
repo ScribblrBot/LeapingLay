@@ -27,14 +27,12 @@ export default function ProfilePage() {
           );
           
           if (!youtubeResponse.ok) {
-            console.warn('YouTube API not available, continuing without video data');
             setYoutubeData(null);
           } else {
             const youtubeData = await youtubeResponse.json();
             setYoutubeData(youtubeData);
           }
         } catch (youtubeError) {
-          console.warn('YouTube API error:', youtubeError.message);
           setYoutubeData(null);
         }
       } catch (err) {
@@ -48,8 +46,12 @@ export default function ProfilePage() {
   }, []);
 
   // Function to handle server clicks
-  const handleServerClick = (serverId) => {
-    setActiveServer(serverId);
+  const handleServerClick = (serverId, url = null) => {
+    if (url) {
+      window.open(url, '_blank');
+    } else {
+      setActiveServer(serverId);
+    }
   };
 
   // Function to render content based on active server
@@ -101,7 +103,6 @@ export default function ProfilePage() {
             </div>
           </div>
         );
-      // Add cases for other servers
       default:
         return (
           <div className="max-w-6xl mx-auto px-8 py-12">
@@ -109,7 +110,7 @@ export default function ProfilePage() {
               {activeServer.charAt(0).toUpperCase() + activeServer.slice(1)} Server
             </h2>
             <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30">
-              <p className="text-gray-300">Content for the {activeServer} server would go here.</p>
+              <p className="text-gray-300">test {activeServer} test.</p>
             </div>
           </div>
         );
@@ -163,12 +164,9 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden flex">
-      {/* Script tag */}
       <Script src="/script/cat.js" strategy="afterInteractive" />
       
-      {/* Discord-style Sidebar */}
       <div className="w-20 bg-gray-900 flex flex-col items-center py-4 space-y-4 border-r border-gray-800">
-        {/* Profile Server (Main Icon) */}
         <div 
           className={`relative w-12 h-12 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 group ${
             activeServer === 'profile' 
@@ -188,46 +186,50 @@ export default function ProfilePage() {
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </div>
 
-        {/* Divider */}
         <div className="w-8 h-0.5 bg-gray-700 rounded-full"></div>
 
-        {/* Social Media Servers */}
         {[
           { 
             id: 'youtube',
             platform: 'youtube', 
             icon: 'fab fa-youtube', 
             color: 'bg-red-500',
+            url: `https://youtube.com/channel/${profile.socials.youtube}`
           },
           { 
             id: 'twitch',
             platform: 'twitch', 
             icon: 'fab fa-twitch', 
             color: 'bg-purple-500',
+            url: `https://twitch.tv/${profile.socials.twitch}`
           },
           { 
             id: 'instagram',
             platform: 'instagram', 
             icon: 'fab fa-instagram', 
             color: 'bg-pink-500',
+            url: `https://instagram.com/${profile.socials.instagram}`
           },
           { 
             id: 'twitter',
             platform: 'twitter', 
             icon: 'fab fa-x-twitter', 
             color: 'bg-blue-400',
+            url: `https://twitter.com/${profile.socials.twitter}`
           },
           { 
             id: 'throne',
             platform: 'throne', 
             icon: 'fas fa-crown', 
             color: 'bg-yellow-500',
+            url: `https://throne.com/${profile.socials.throne}`
           },
           { 
             id: 'discord',
             platform: 'discord', 
             icon: 'fab fa-discord', 
             color: 'bg-indigo-500',
+            url: `https://discord.gg/${profile.socials.discord}`
           }
         ].map((social) => (
           <div
@@ -237,7 +239,7 @@ export default function ProfilePage() {
                 ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600' 
                 : `rounded-2xl ${social.color} hover:rounded-3xl hover:scale-110`
             }`}
-            onClick={() => handleServerClick(social.id)}
+            onClick={() => handleServerClick(social.id, social.url)}
           >
             <i className={`${social.icon} text-xl text-white`}></i>
             <div className={`absolute -left-1 top-1/2 w-1 h-4 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
@@ -249,7 +251,6 @@ export default function ProfilePage() {
           </div>
         ))}
 
-        {/* Online Status Indicator */}
         <div className="mt-auto mb-2 relative">
           <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
             <div className="w-3 h-3 bg-green-500 rounded-full ring-2 ring-gray-900"></div>
@@ -257,9 +258,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
-        {/* Animated background elements */}
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse"></div>
           <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse delay-1000"></div>
@@ -271,12 +270,10 @@ export default function ProfilePage() {
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
         </Head>
 
-        {/* Header Section */}
         <header className="relative z-10">
           {renderServerContent()}
         </header>
 
-        {/* YouTube Section (keep this if you want it always visible) */}
         {youtubeData && youtubeData.id && activeServer === 'profile' && (
           <main className="flex-1 overflow-y-auto px-8 pb-12 relative z-10">
             <section className="mb-12">
@@ -291,7 +288,6 @@ export default function ProfilePage() {
                 </h2>
                 
                 <div className="flex flex-col lg:flex-row bg-slate-700/30 rounded-2xl overflow-hidden border border-slate-600/50 hover:border-purple-500/40 transition-all duration-500 shadow-xl hover:shadow-2xl">
-                  {/* Video Thumbnail */}
                   <div className="lg:w-2/5 relative group cursor-pointer overflow-hidden">
                     <div className="aspect-video h-full">
                       <img 
@@ -308,13 +304,11 @@ export default function ProfilePage() {
                     </div>
                   </div>
                   
-                  {/* Video Info */}
                   <div className="p-8 lg:w-3/5">
                     <h3 className="text-2xl font-semibold text-white mb-4 hover:text-purple-300 transition-colors duration-300 line-clamp-2 leading-tight">
                       {youtubeData.title}
                     </h3>
                     
-                    {/* Stats Grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-6">
                       {[
                         { icon: 'eye', value: youtubeData.viewCount, label: 'views', color: 'text-blue-400' },
@@ -335,7 +329,6 @@ export default function ProfilePage() {
                       ))}
                     </div>
                     
-                    {/* Publish Date */}
                     <div className="flex items-center gap-3 text-gray-400 mb-6 p-3 bg-slate-700/30 rounded-lg border border-slate-600/20">
                       <i className="far fa-calendar-alt text-purple-400 text-lg"></i>
                       <span>Published: {new Date(youtubeData.publishedAt).toLocaleDateString('en-US', { 
@@ -345,7 +338,6 @@ export default function ProfilePage() {
                       })}</span>
                     </div>
                     
-                    {/* Watch Button */}
                     <a 
                       href={`https://youtube.com/watch?v=${youtubeData.id}`}
                       target="_blank"
