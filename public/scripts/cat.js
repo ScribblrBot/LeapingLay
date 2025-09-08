@@ -1,4 +1,5 @@
-(() => {
+// Wrap the entire code in a function that runs when DOM is ready
+function initNeko() {
   const nekoGif = "https://raw.githubusercontent.com/adryd325/oneko.js/14bab15a755d0e35cd4ae19c931d96d306f99f42/oneko.gif";
 
   const nekoEl = document.createElement("div");
@@ -46,11 +47,11 @@
     nekoEl.style.imageRendering = "pixelated";
     nekoEl.style.left = `${nekoPosX - 16}px`;
     nekoEl.style.top = `${nekoPosY - 16}px`;
-    nekoEl.style.zIndex = 999999;
+    nekoEl.style.zIndex = "999999";
     nekoEl.style.backgroundImage = `url(${nekoGif})`;
 
     document.body.appendChild(nekoEl);
-    document.addEventListener("mousemove", e => {
+    document.addEventListener("mousemove", function(e) {
       mousePosX = e.clientX;
       mousePosY = e.clientY;
     });
@@ -83,7 +84,7 @@
   function idle() {
     idleTime += 1;
 
-    if (idleTime > 10 && Math.floor(Math.random() * 200) == 0 && idleAnimation == null) {
+    if (idleTime > 10 && Math.floor(Math.random() * 200) === 0 && idleAnimation == null) {
       let anims = ["sleeping", "scratchSelf"];
       if (nekoPosX < 32) anims.push("scratchWallW");
       if (nekoPosY < 32) anims.push("scratchWallN");
@@ -138,10 +139,10 @@
     }
 
     let dir = "";
-    dir += diffY / distance > 0.5 ? "N" : "";
-    dir += diffY / distance < -0.5 ? "S" : "";
-    dir += diffX / distance > 0.5 ? "W" : "";
-    dir += diffX / distance < -0.5 ? "E" : "";
+    if (diffY / distance > 0.5) dir += "N";
+    if (diffY / distance < -0.5) dir += "S";
+    if (diffX / distance > 0.5) dir += "W";
+    if (diffX / distance < -0.5) dir += "E";
 
     setSprite(dir, frameCount);
 
@@ -155,5 +156,13 @@
     nekoEl.style.top = `${nekoPosY - 16}px`;
   }
 
-  init();
-})();
+  // Initialize when DOM is fully loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+}
+
+// Start the animation
+initNeko();
