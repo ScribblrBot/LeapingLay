@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
-import '../cat.js'; // Import cat.js at the top
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState(null);
