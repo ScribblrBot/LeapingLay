@@ -11,7 +11,6 @@ export default function ProfilePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // Fetch profile data only
         const profileResponse = await fetch('/json/profile.json');
         if (!profileResponse.ok) {
           throw new Error('Failed to fetch profile data');
@@ -28,24 +27,22 @@ export default function ProfilePage() {
     fetchData();
   }, []);
 
-  // Function to handle server clicks
+  // Handles icon clicks
   const handleServerClick = (serverId, url = null) => {
     if (url) {
-      // Open URL in new tab
-      window.open(url, '_blank', 'noopener,noreferrer');
+      window.open(url, '_blank', 'noopener,noreferrer'); // Open link directly
     } else {
       setActiveServer(serverId);
     }
   };
 
-  // Function to render content based on active server
+  // Render main content
   const renderServerContent = () => {
-    switch(activeServer) {
+    switch (activeServer) {
       case 'profile':
         return (
           <div className="max-w-6xl mx-auto px-8 py-12">
             <div className="flex flex-col md:flex-row items-center gap-8">
-              {/* Profile Info */}
               <div className="text-center md:text-left flex-1">
                 <h1 className="text-5xl md:text-6xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 via-pink-400 to-purple-400 animate-gradient bg-300% animate-shimmer">
                   {profile.username}
@@ -65,28 +62,6 @@ export default function ProfilePage() {
             </div>
           </div>
         );
-      case 'youtube':
-        return (
-          <div className="max-w-6xl mx-auto px-8 py-12">
-            <h2 className="text-3xl font-bold mb-8 flex items-center gap-3">
-              <span className="bg-gradient-to-r from-red-500 to-pink-500 bg-clip-text text-transparent">
-                <i className="fab fa-youtube text-3xl mr-3 text-red-500 drop-shadow-lg"></i>
-                YouTube Channel
-              </span>
-            </h2>
-            <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30">
-              <p className="text-gray-300 mb-6">Content for YouTube server would go here.</p>
-              <a 
-                href={`https://youtube.com/channel/${profile.socials.youtube}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
-              >
-                Visit YouTube Channel
-              </a>
-            </div>
-          </div>
-        );
       default:
         return (
           <div className="max-w-6xl mx-auto px-8 py-12">
@@ -94,7 +69,9 @@ export default function ProfilePage() {
               {activeServer.charAt(0).toUpperCase() + activeServer.slice(1)} Server
             </h2>
             <div className="bg-slate-800/40 backdrop-blur-lg rounded-3xl shadow-2xl p-8 border border-purple-500/30">
-              <p className="text-gray-300">test {activeServer} test.</p>
+              <p className="text-gray-300">
+                Redirecting you to {activeServer}...
+              </p>
             </div>
           </div>
         );
@@ -124,14 +101,14 @@ export default function ProfilePage() {
         <div className="bg-slate-800/80 backdrop-blur-lg p-8 rounded-2xl shadow-2xl max-w-md w-full text-center border border-purple-500/30 relative overflow-hidden">
           <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/10 rounded-full blur-2xl"></div>
           <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-pink-500/10 rounded-full blur-2xl"></div>
-          
+
           <div className="relative z-10">
             <div className="text-red-400 text-5xl mb-4 animate-bounce">⚠️</div>
             <h2 className="text-2xl font-bold text-white mb-3 bg-gradient-to-r from-red-400 to-pink-400 bg-clip-text text-transparent">
               Something went wrong
             </h2>
             <p className="text-gray-300 mb-6">{error}</p>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl hover:from-purple-700 hover:to-pink-700 transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-purple-500/25 font-medium relative overflow-hidden group"
             >
@@ -146,11 +123,13 @@ export default function ProfilePage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden flex">
+      {/* Sidebar */}
       <div className="w-20 bg-gray-900 flex flex-col items-center py-4 space-y-4 border-r border-gray-800">
-        <div 
+        {/* Profile icon */}
+        <div
           className={`relative w-12 h-12 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 group ${
-            activeServer === 'profile' 
-              ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600' 
+            activeServer === 'profile'
+              ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600'
               : 'rounded-2xl bg-gray-700 hover:rounded-3xl hover:bg-purple-600'
           }`}
           onClick={() => handleServerClick('profile')}
@@ -160,77 +139,83 @@ export default function ProfilePage() {
             alt={profile.username}
             className="w-full h-full object-cover"
           />
-          <div className={`absolute -left-1 top-1/2 w-1 h-8 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
-            activeServer === 'profile' ? 'opacity-100' : 'opacity-0'
-          }`}></div>
+          <div
+            className={`absolute -left-1 top-1/2 w-1 h-8 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
+              activeServer === 'profile' ? 'opacity-100' : 'opacity-0'
+            }`}
+          ></div>
           <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </div>
 
         <div className="w-8 h-0.5 bg-gray-700 rounded-full"></div>
 
+        {/* Social links */}
         {[
-          { 
+          {
             id: 'youtube',
-            platform: 'youtube', 
-            icon: 'fab fa-youtube', 
+            platform: 'youtube',
+            icon: 'fab fa-youtube',
             color: 'bg-red-500',
-            url: `https://youtube.com/channel/${profile.socials.youtube}`
+            url: `https://youtube.com/channel/${profile.socials.youtube}`,
           },
-          { 
+          {
             id: 'twitch',
-            platform: 'twitch', 
-            icon: 'fab fa-twitch', 
+            platform: 'twitch',
+            icon: 'fab fa-twitch',
             color: 'bg-purple-500',
-            url: `https://twitch.tv/${profile.socials.twitch}`
+            url: `https://twitch.tv/${profile.socials.twitch}`,
           },
-          { 
+          {
             id: 'instagram',
-            platform: 'instagram', 
-            icon: 'fab fa-instagram', 
+            platform: 'instagram',
+            icon: 'fab fa-instagram',
             color: 'bg-pink-500',
-            url: `https://instagram.com/${profile.socials.instagram}`
+            url: `https://instagram.com/${profile.socials.instagram}`,
           },
-          { 
+          {
             id: 'twitter',
-            platform: 'twitter', 
-            icon: 'fab fa-x-twitter', 
+            platform: 'twitter',
+            icon: 'fab fa-x-twitter',
             color: 'bg-blue-400',
-            url: `https://twitter.com/${profile.socials.twitter}`
+            url: `https://twitter.com/${profile.socials.twitter}`,
           },
-          { 
+          {
             id: 'throne',
-            platform: 'throne', 
-            icon: 'fas fa-crown', 
+            platform: 'throne',
+            icon: 'fas fa-crown',
             color: 'bg-yellow-500',
-            url: `https://throne.com/${profile.socials.throne}`
+            url: `https://throne.com/${profile.socials.throne}`,
           },
-          { 
+          {
             id: 'discord',
-            platform: 'discord', 
-            icon: 'fab fa-discord', 
+            platform: 'discord',
+            icon: 'fab fa-discord',
             color: 'bg-indigo-500',
-            url: `https://discord.gg/${profile.socials.discord}`
-          }
+            url: `https://discord.gg/${profile.socials.discord}`,
+          },
         ].map((social) => (
           <div
             key={social.id}
             className={`relative w-12 h-12 rounded-2xl flex items-center justify-center cursor-pointer transition-all duration-300 group ${
-              activeServer === social.id 
-                ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600' 
+              activeServer === social.id
+                ? 'rounded-3xl bg-gradient-to-r from-purple-600 to-pink-600'
                 : `rounded-2xl ${social.color} hover:rounded-3xl hover:scale-110`
             }`}
             onClick={() => handleServerClick(social.id, social.url)}
           >
             <i className={`${social.icon} text-xl text-white`}></i>
-            <div className={`absolute -left-1 top-1/2 w-1 h-4 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
-              activeServer === social.id ? 'opacity-100' : 'opacity-0'
-            }`}></div>
+            <div
+              className={`absolute -left-1 top-1/2 w-1 h-4 bg-white rounded-full transform -translate-y-1/2 transition-all duration-300 ${
+                activeServer === social.id ? 'opacity-100' : 'opacity-0'
+              }`}
+            ></div>
             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-2 bg-black text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap">
               {social.platform}
             </div>
           </div>
         ))}
 
+        {/* Online indicator */}
         <div className="mt-auto mb-2 relative">
           <div className="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center">
             <div className="w-3 h-3 bg-green-500 rounded-full ring-2 ring-gray-900"></div>
@@ -238,6 +223,7 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full opacity-10">
           <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500 rounded-full blur-3xl animate-pulse"></div>
@@ -247,12 +233,13 @@ export default function ProfilePage() {
         <Head>
           <title>{profile.username} - Profile</title>
           <meta name="description" content={profile.bio} />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+          <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          />
         </Head>
 
-        <header className="relative z-10">
-          {renderServerContent()}
-        </header>
+        <header className="relative z-10">{renderServerContent()}</header>
 
         <footer className="max-w-6xl mx-auto px-8 py-8 text-center text-gray-400 text-sm relative z-10">
           <p className="bg-slate-800/30 backdrop-blur-sm p-4 rounded-xl border border-purple-500/10">
